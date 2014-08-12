@@ -17,11 +17,14 @@
   "homepage": "https://github.com/loklaan/agorophinstify",
   "dependencies": {
     "bower": "~1.3.9",
-    "express": "~4.8.3"
+    "errorhandler": "~1.1.1",
+    "express": "~4.8.3",
+    "morgan": "~1.2.2"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-cli": "~0.1.13",
+    "grunt-contrib-jshint": "~0.10.0",
     "grunt-wiredep": "~1.8.0"
   }
 }
