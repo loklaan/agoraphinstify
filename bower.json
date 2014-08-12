@@ -1,0 +1,23 @@
+{
+  "name": "agorophinstify",
+  "version": "0.0.0",
+  "homepage": "https://github.com/loklaan/agorophinstify",
+  "authors": [
+    "Lochlan Bunn <loklaan@gmail.com>"
+  ],
+  "description": "Web mashup that combines Maps, Crowdsourced Photos and Music to give the illest of chills to a suffering Agorophobe.",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.21",
+    "bootstrap": "~3.2.0",
+    "jquery": "~2.1.1"
+  }
+}

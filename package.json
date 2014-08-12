@@ -1,0 +1,27 @@
+{
+  "name": "agorophinstify",
+  "version": "0.0.0",
+  "description": "Server for Agorophinstify. And dev flow.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loklaan/agorophinstify.git"
+  },
+  "author": "Lochlan Bunn <loklaan@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/loklaan/agorophinstify/issues"
+  },
+  "homepage": "https://github.com/loklaan/agorophinstify",
+  "dependencies": {
+    "bower": "~1.3.9",
+    "express": "~4.8.3"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-cli": "~0.1.13",
+    "grunt-wiredep": "~1.8.0"
+  }
+}
