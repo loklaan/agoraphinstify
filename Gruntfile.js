@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     wiredep: {
       target: {
-        src: ''
+        src: 'public/views/index.html'
       }
     },
     jshint: {
