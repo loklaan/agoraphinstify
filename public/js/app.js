@@ -8,25 +8,29 @@
     'ngRoute',
     'AgoroApp.controllers',
     'AgoroApp.directives',
-    'AgoroApp.services'
+    'AgoroApp.services',
+    'leaflet-directive'
     ]);
 
   module.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
     // Map view homepage
     when('/', {
-      templateUrl: 'partials/map.html',
-      controller: 'MapController'
+      templateUrl: '../views/partials/map.html',
+      controller: 'MapController',
+      controllerAs: 'map'
     }).
     // Instify view by event
     when('/event/:eventId', { // 
-      templateUrl: 'partials/instify.html',
-      controller: 'InstifyController'
+      templateUrl: '../views/partials/instify.html',
+      controller: 'InstifyController',
+      controllerAs: 'instify'
     }).
     // Instify view by venue
     when('/venue/:venueId', {
-      templateUrl: 'partials/instify.html',
-      controller: 'InstifyController'
+      templateUrl: '../views/partials/instify.html',
+      controller: 'InstifyController',
+      controllerAs: 'instify'
     });
   }]);
   

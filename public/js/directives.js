@@ -2,12 +2,8 @@
  * Agorophinstify Directives module.
  */
 
-(function(){
+(function() {
 
   var module = angular.module('AgoroApp.directives', []);
-
-  module.directive('name', ['', function(){
-    
-  }]);
 
 })();
