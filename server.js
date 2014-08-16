@@ -13,7 +13,7 @@ var app = express();
 /**
  * Configuration
  */
-app.use(express.static(path.join(__dirname + 'public')));
+app.use(express.static(path.join(__dirname + '/public')));
 app.use(morgan('dev'));
 app.set('port', process.env.PORT || 3000);
 
@@ -33,7 +33,7 @@ if (env === 'production') {
 app.get('/', routes.index);
 app.get('/partials/:name', routes.partials);
 // serve all other to index
-app.get('*', routes.index);
+// app.get('*', routes.index);
 
 /**
  * Server Start

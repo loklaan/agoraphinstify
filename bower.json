@@ -20,6 +20,8 @@
     "bootstrap": "~3.2.0",
     "jquery": "~2.1.1",
     "angular-route": "~1.2.22",
-    "angular-leaflet-directive": "~0.7.7"
+    "angular-resource": "~1.2.22",
+    "angular-leaflet-directive": "~0.7.7",
+    "leaflet": "~0.7.3"
   }
 }

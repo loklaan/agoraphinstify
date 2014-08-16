@@ -1,8 +1,7 @@
 language: node_js
 node_js:
 - '0.10'
-install: npm install && node_modules/bower/bin/bower install
-before_script: grunt setup
+install: npm install
 deploy:
   provider: heroku
   app: agorophinstify
