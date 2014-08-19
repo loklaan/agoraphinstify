@@ -5,27 +5,7 @@
 
 var Url = require('url');
 var request = require('request');
-/**
- * Each object within is key/value formatted for that particular service.
- * @type {Object}
- */
-var apiDetails = {
-  eventful: {
-    url: 'http://api.eventful.com/json',
-    auth: {
-      app_key: 'DH3Ff2FxLkH6VbBp'
-    }
-  },
-  spotify: {
-    url: 'http://api.spotify.com/v1'
-  },
-  instagram: {
-    url: 'http://api.instagram.com/v1',
-    auth: {
-      client_id: '1799b886cb2d423191584c5ccde96b16'
-    }
-  }
-};
+var apiDetails = require('../config.json');
 
 exports.eventful = function(req, res) {
 
@@ -141,7 +121,8 @@ function removeSubPaths(url, subpaths) {
 /**
  * Adds parameters into a url.
  * @param  {string} url     Url string
- * @param  {object} params  Parameters as properties of the param object
+ * @param  {object} params  Parameters as properties of the project's
+ *                          config.json auths
  * @return {string}         Returns a formatted url string
  */
 function addParams(url, params) {

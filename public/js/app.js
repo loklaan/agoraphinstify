@@ -13,6 +13,7 @@
     ]);
 
   module.config(['$routeProvider', function($routeProvider) {
+
     $routeProvider.
     // Map view homepage
     when('/', {
@@ -21,7 +22,7 @@
       controllerAs: 'map'
     }).
     // Instify view by event
-    when('/event/:eventId', { // 
+    when('/event/:eventId', {
       templateUrl: '../views/partials/instify.html',
       controller: 'InstifyController',
       controllerAs: 'instify'
@@ -33,5 +34,5 @@
       controllerAs: 'instify'
     });
   }]);
-  
+
 })();

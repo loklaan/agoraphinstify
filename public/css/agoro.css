@@ -1,0 +1,33 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+html, body, .full-height, .leaflet-container {
+  height: 100%;
+}
+
+.full-height, .leaflet-container {
+  position: relative;
+}
+
+.agoro-header {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  right: 0;
+  margin: 0;
+  border-bottom: solid 5px #5F5F5F;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 5px 5px 6px 50px;
+  margin: 0;
+}
+
+.agoro-title {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  font-weight: 500;
+  font-size: 2em;
+  color: #5F5F5F;
+}
