@@ -37,7 +37,36 @@
     });
 
     leafletData.getMap().then(function(map) {
-      // do stuff with map object
+      // map changes updates eventful data
+      map.addEventListener('moveend resize', function() {
+        var within = getApproxMapRadiusKM(map);
+        var center = map.getCenter();
+        var results = EventSearch.get({
+          where: center.lat + ',' + center.lng,
+          within: within
+        }, function() {
+          console.log('Got events...');
+          window.markers = $scope.markers = {};
+          results.events.event.forEach(function(event, index, events) {
+            if (event.performers) {
+              var marker = event.venue_name.replace(/\s|\W/g, '').toLowerCase();
+              if ($scope.markers[marker]) {
+                $scope.markers[marker].message += ', ' + event.performers.performer.name;
+              } else {
+                $scope.markers[marker] = {
+                  lat: parseFloat(event.latitude),
+                  lng: parseFloat(event.longitude),
+                  message: event.venue_name + ': ' + event.performers.performer.name,
+                  draggable: false
+                };
+              }
+            } else {
+              console.log('Got no performers...');
+            }
+          });
+        });
+
+      });
     });
 
   }]);
@@ -50,5 +79,10 @@
 
 
   }]);
+
+  function getApproxMapRadiusKM(map) {
+    // FIX: divide by something accurate
+    return map.getBounds().getNorthEast().distanceTo(map.getCenter()) / 1000;
+  }
 
 })();
