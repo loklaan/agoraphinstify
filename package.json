@@ -1,6 +1,6 @@
 {
   "name": "agorophinstify",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Server for Agorophinstify. And dev flow.",
   "scripts": {
     "start": "node server.js",
