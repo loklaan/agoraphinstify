@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node server.js",
     "postinstall": "node node_modules/bower/bin/bower install",
-    "test": "node node_modules/istanbul/lib/cli.js cover node node_modules/jasmine-node/bin/jasmine-node --captureExceptions tests/server/"
+    "test": "node node_modules/istanbul/lib/cli.js cover node_modules/jasmine-node/bin/jasmine-node --captureExceptions tests/server/"
   },
   "repository": {
     "type": "git",
