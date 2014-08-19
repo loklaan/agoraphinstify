@@ -15,6 +15,7 @@ var app = express();
  */
 app.use(express.static(path.join(__dirname + '/public')));
 app.use(morgan('dev'));
+
 app.set('port', process.env.PORT || 3000);
 
 var env = process.env.NODE_ENV || 'development';
@@ -32,8 +33,12 @@ if (env === 'production') {
 // serve index and view partials
 app.get('/', routes.index);
 app.get('/partials/:name', routes.partials);
-// serve all other to index
-// app.get('*', routes.index);
+
+// serve api proxy
+// app.get('/events/*', routes.api.eventful);
+app.get('/api/eventful/*', routes.api.eventful);
+app.get('/api/spotify/*', routes.api.spotify);
+app.get('/api/instagram/*', routes.api.instagram);
 
 /**
  * Server Start

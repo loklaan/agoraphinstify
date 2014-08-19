@@ -2,6 +2,7 @@
 
 Web mashup that combines Maps, Crowdsourced Photos and Music to give the illest of chills to a suffering Agorophobe.
 
+[![Issues in Progress](https://badge.waffle.io/loklaan/agorophinstify.svg?label=in progress&title=In Progress)](http://waffle.io/loklaan/agorophinstify)
 [![Build Status](https://travis-ci.org/loklaan/agorophinstify.svg?branch=master)](https://travis-ci.org/loklaan/agorophinstify)
 
 ## Installation
