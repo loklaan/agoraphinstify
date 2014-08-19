@@ -4,6 +4,31 @@
 
 (function() {
 
-  var module = angular.module('AgoroApp.services', []); // TODO: create modules for each API as a service
+  var module = angular.module('AgoroApp.services', [
+    'ngResource'
+    ]);
+
+  var api = {
+    eventful: {
+      url: '/api/eventful'
+    }
+  };
+
+  /**
+   * Eventful API
+   */
+
+   module.factory('EventSearch', ['$resource', function($resource){
+    return $resource(api.eventful.url + '/events/search', {}, {
+      get: {
+        method: 'GET',
+        params: {
+          category: 'music',
+          units: 'km',
+          page_size: 100
+        }
+      }
+    });
+  }]);
 
 })();
