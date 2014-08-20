@@ -1,6 +1,6 @@
 var request = require('supertest'),
     express = require('express'),
-    apiRoutes = require('../../routes/api.js');
+    apiRoutes = require('../../routes/api.js'),
     apiConfig = require('../../config.json');
 
 var app = express();
