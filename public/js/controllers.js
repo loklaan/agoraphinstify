@@ -33,39 +33,49 @@
           attribution: '&copy; <a href="http://stamen.com">Stamen Design</a> Tile Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> Contributors'
         }
       },
-      markers: {}
+      markers: {},
+      busy: false
     });
 
     leafletData.getMap().then(function(map) {
       // map changes updates eventful data
       map.addEventListener('moveend resize', function() {
+        if ($scope.busy) {
+          return;
+        }
+        // lock any future ajax requests
+        $scope.busy = true;
         var within = getApproxMapRadiusKM(map);
         var center = map.getCenter();
+        console.log('Getting events...');
         var results = EventSearch.get({
           where: center.lat + ',' + center.lng,
           within: within
         }, function() {
           console.log('Got events...');
           window.markers = $scope.markers = {};
-          results.events.event.forEach(function(event, index, events) {
-            if (event.performers) {
-              var marker = event.venue_name.replace(/\s|\W/g, '').toLowerCase();
-              if ($scope.markers[marker]) {
-                $scope.markers[marker].message += ', ' + event.performers.performer.name;
+          if (results.events !== null) {
+            results.events.event.forEach(function(event, index, events) {
+              if (event.performers) {
+                var marker = event.venue_name.replace(/\s|\W/g, '').toLowerCase();
+                if ($scope.markers[marker]) {
+                  $scope.markers[marker].message += ', ' + event.performers.performer.name;
+                } else {
+                  $scope.markers[marker] = {
+                    lat: parseFloat(event.latitude),
+                    lng: parseFloat(event.longitude),
+                    message: event.venue_name + ': ' + event.performers.performer.name,
+                    draggable: false
+                  };
+                }
               } else {
-                $scope.markers[marker] = {
-                  lat: parseFloat(event.latitude),
-                  lng: parseFloat(event.longitude),
-                  message: event.venue_name + ': ' + event.performers.performer.name,
-                  draggable: false
-                };
+                console.log('Got no performers...');
               }
-            } else {
-              console.log('Got no performers...');
-            }
-          });
+            });
+          }
+        // unlock for ajax requests
+        $scope.busy = false;
         });
-
       });
     });
 

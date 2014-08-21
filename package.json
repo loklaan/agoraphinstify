@@ -35,7 +35,6 @@
     "grunt-jasmine-node-coverage": "~0.1.11",
     "grunt-karma": "~0.8.3",
     "grunt-wiredep": "~1.8.0",
-    "istanbul": "~0.3.0",
     "karma": "~0.12.22",
     "karma-chrome-launcher": "~0.1.4",
     "karma-coverage": "~0.2.6",
