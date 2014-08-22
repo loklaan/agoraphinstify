@@ -17,6 +17,5 @@
     routesWebClient.init(app);
 
   };
-})(exports);
 
-exports.api = require('./api.js');
+})(exports);
