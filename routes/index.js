@@ -1,18 +1,22 @@
 /**
- * GET routes for the Angular app's views.
+ * Routes module, configuring route files for Express.
  */
 
-var path = require('path');
+(function(exports) {
+  "use strict";
 
-var public = path.join(__dirname, '../public/views/');
+  /**
+   * Aggregation of declared routes used by Express.
+   */
+  exports.init = function(app) {
 
-exports.index = function(req, res){
-  res.sendFile(public + 'index.html');
-};
+    var routesApi = require('./api.js');
+    var routesWebClient = require('./webclient.js');
 
-exports.partials = function (req, res) {
-  var name = req.params.name;
-  res.sendFile(public + 'partials/' + name + '.html');
-};
+    routesApi.init(app);
+    routesWebClient.init(app);
+
+  };
+})(exports);
 
 exports.api = require('./api.js');

@@ -30,15 +30,10 @@ if (env === 'production') {
   // TODO
 }
 
-// serve index and view partials
-app.get('/', routes.index);
-app.get('/partials/:name', routes.partials);
-
-// serve api proxy
-// app.get('/events/*', routes.api.eventful);
-app.get('/api/eventful/*', routes.api.eventful);
-app.get('/api/spotify/*', routes.api.spotify);
-app.get('/api/instagram/*', routes.api.instagram);
+/**
+ * Routes
+ */
+routes.init(app);
 
 /**
  * Server Start
