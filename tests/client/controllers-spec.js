@@ -10,8 +10,15 @@ describe('AgoroApp controllers', function() {
       ctrl = $controller('MapController', {$scope:scope});
     }));
 
-    it('should create a false default.zoomControl', function() {
-      expect(scope.default.zoomControl).toBe(false);
+    // FIX: high maintenance test
+    it('should create a default map values', function() {
+      expect(scope.default).toBeDefined();
+      expect(scope.center).toBeDefined();
+      expect(scope.tiles).toBeDefined();
+      expect(scope.markers).toBeDefined();
+    });
+
+    xit('should update markers on markers:update event', function() {
     });
 
   });

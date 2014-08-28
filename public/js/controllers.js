@@ -15,8 +15,10 @@
   module.controller('MapController', [
     '$scope',
     'leafletData',
-    'EventSearch',
-  function($scope, leafletData, EventSearch) {
+    'Eventful',
+    'Markers',
+    '$rootScope',
+  function($scope, leafletData, Eventful, Markers, $rootScope) {
 
     // MAP DEFAULTS
     angular.extend($scope, {
@@ -33,50 +35,25 @@
           attribution: '&copy; <a href="http://stamen.com">Stamen Design</a> Tile Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> Contributors'
         }
       },
-      markers: {},
-      busy: false
+      markers: {}
     });
 
     leafletData.getMap().then(function(map) {
-      // map changes updates eventful data
+      // map changes update triggers new eventful query chain
       map.addEventListener('moveend resize', function() {
-        if ($scope.busy) {
-          return;
-        }
-        // lock any future ajax requests
-        $scope.busy = true;
         var within = getApproxMapRadiusKM(map);
+        within = within < 25 ? within : 25; // limit events search radius to 25km
         var center = map.getCenter();
-        console.log('Getting events...');
-        var results = EventSearch.get({
+        var results = Eventful.startGet({
           where: center.lat + ',' + center.lng,
           within: within
-        }, function() {
-          console.log('Got events...');
-          window.markers = $scope.markers = {};
-          if (results.events !== null) {
-            results.events.event.forEach(function(event, index, events) {
-              if (event.performers) {
-                var marker = event.venue_name.replace(/\s|\W/g, '').toLowerCase();
-                if ($scope.markers[marker]) {
-                  $scope.markers[marker].message += ', ' + event.performers.performer.name;
-                } else {
-                  $scope.markers[marker] = {
-                    lat: parseFloat(event.latitude),
-                    lng: parseFloat(event.longitude),
-                    message: event.venue_name + ': ' + event.performers.performer.name,
-                    draggable: false
-                  };
-                }
-              } else {
-                console.log('Got no performers...');
-              }
-            });
-          }
-        // unlock for ajax requests
-        $scope.busy = false;
         });
       });
+    });
+
+    // Markers ng service will publish new markers
+    $rootScope.$on('markers:update', function(event, newMarkers) {
+      $scope.markers = newMarkers;
     });
 
   }]);
