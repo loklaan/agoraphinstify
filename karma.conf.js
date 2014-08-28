@@ -14,6 +14,7 @@ module.exports = function(config) {
       'public/libs/angular-animate/angular-animate.js',
       'public/libs/leaflet-dist/leaflet.js',
       'public/libs/angular-leaflet-directive/dist/angular-leaflet-directive.js',
+      'public/libs/angular-loading-bar/build/loading-bar.js',
       'public/libs/angular-mocks/angular-mocks.js',
       // endbower#dev
       'public/js/*.js',
@@ -37,7 +38,7 @@ module.exports = function(config) {
     },
     port: 1412,
     colors: true,
-    logLevel: config.LOG_DEBUG,
+    logLevel: config.LOG_INFO,
     autoWatch: true,
     captureTimeout: 60000,
     singleRun: false,

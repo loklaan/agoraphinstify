@@ -9,10 +9,16 @@
     'AgoroApp.controllers',
     'AgoroApp.directives',
     'AgoroApp.services',
-    'leaflet-directive'
+    'leaflet-directive',
+    'angular-loading-bar'
     ]);
 
-  module.config(['$routeProvider', function($routeProvider) {
+  module.config([
+    '$routeProvider',
+    'cfpLoadingBarProvider',
+  function($routeProvider, cfpLoadingBarProvider) {
+
+    cfpLoadingBarProvider.includeBar = false;
 
     $routeProvider.
     // Map view homepage
