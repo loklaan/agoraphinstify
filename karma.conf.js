@@ -12,7 +12,7 @@ module.exports = function(config) {
       'public/libs/angular-route/angular-route.js',
       'public/libs/angular-resource/angular-resource.js',
       'public/libs/angular-animate/angular-animate.js',
-      'public/libs/leaflet-dist/leaflet.js',
+      'public/libs/leaflet/dist/leaflet.js',
       'public/libs/angular-leaflet-directive/dist/angular-leaflet-directive.js',
       'public/libs/angular-loading-bar/build/loading-bar.js',
       'public/libs/angular-mocks/angular-mocks.js',

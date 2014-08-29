@@ -134,7 +134,7 @@
    *     @markers  {object}
    *         Collection of marker objects
    */
-  module.factory('Markers', [
+  module.factory('EventMarkers', [
     '$rootScope',
   function($rootScope) {
     var _markers = {};
@@ -143,7 +143,7 @@
     $rootScope.$on('eventful:update', eventUpdateMarkers);
 
     /**
-     * Callback function for eventful:update listener. Updates Markers
+     * Callback function for eventful:update listener. Updates EventMarkers
      * with new eventful data. Broadcasts update of markers.
      * @param  {object} listenEvent Angular event listener object
      * @param  {array}  data        Array of events from Eventful

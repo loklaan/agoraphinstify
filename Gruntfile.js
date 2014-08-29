@@ -25,6 +25,10 @@ module.exports = function(grunt) {
       target: {
         src: [
           'public/views/index.html'
+        ],
+        exclude: [
+          'public/libs/leaflet/dist/leaflet-src.js',
+          'public/libs/angular-loading-bar/build/loading-bar.css'
         ]
       },
       testenv: {
@@ -42,7 +46,10 @@ module.exports = function(grunt) {
               js: '\'{{filePath}}\','
             }
           }
-        }
+        },
+        exclude: [
+          'public/libs/leaflet/dist/leaflet-src.js',
+        ]
       }
     },
     jshint: {
@@ -86,6 +93,7 @@ module.exports = function(grunt) {
 
   // Default tasks.
   grunt.registerTask('setup', ['wiredep']);
+  grunt.registerTask('heroku:production', ['wiredep']);
   // jasmine_node must come after karma.conf.js gets
   // wrongfullly covered
   grunt.registerTask('test', ['jshint', 'karma:continuous', 'jasmine_node']);

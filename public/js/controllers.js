@@ -16,9 +16,9 @@
     '$scope',
     'leafletData',
     'Eventful',
-    'Markers',
+    'EventMarkers',
     '$rootScope',
-  function($scope, leafletData, Eventful, Markers, $rootScope) {
+  function($scope, leafletData, Eventful, EventMarkers, $rootScope) {
 
     // MAP DEFAULTS
     angular.extend($scope, {
@@ -27,7 +27,9 @@
       },
       center: {
         autoDiscover: true,
-        zoom: 14
+        zoom: 14,
+        lat: 0,
+        lng: 0
       },
       tiles: {
         url: "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg",
@@ -51,7 +53,7 @@
       });
     });
 
-    // Markers ng service will publish new markers
+    // EventMarkers ng service will publish new markers
     $rootScope.$on('markers:update', function(event, newMarkers) {
       $scope.markers = newMarkers;
     });
