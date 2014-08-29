@@ -18,7 +18,8 @@
     'Eventful',
     'EventMarkers',
     '$rootScope',
-  function($scope, leafletData, Eventful, EventMarkers, $rootScope) {
+    '$timeout',
+  function($scope, leafletData, Eventful, EventMarkers, $rootScope, $timeout) {
 
     // MAP DEFAULTS
     angular.extend($scope, {
@@ -37,19 +38,20 @@
           attribution: '&copy; <a href="http://stamen.com">Stamen Design</a> Tile Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> Contributors'
         }
       },
-      markers: {}
+      markers: {},
+      _map: {},
+      _scrubBuffer: {}
     });
 
     leafletData.getMap().then(function(map) {
-      // map changes update triggers new eventful query chain
-      map.addEventListener('moveend resize', function() {
-        var within = getApproxMapRadiusKM(map);
-        within = within < 25 ? within : 25; // limit events search radius to 25km
-        var center = map.getCenter();
-        var results = Eventful.startGet({
-          where: center.lat + ',' + center.lng,
-          within: within
-        });
+      $scope._map = map;
+
+      // map changes trigger new eventful query chain
+      $scope._map.addEventListener('moveend resize', function() {
+        // prevent new eventful request from instaly happening on
+        // new map changes
+        $timeout.cancel($scope._scrubBuffer);
+        $scope._scrubBuffer = $timeout(callEventful, 1500);
       });
     });
 
@@ -57,6 +59,22 @@
     $rootScope.$on('markers:update', function(event, newMarkers) {
       $scope.markers = newMarkers;
     });
+
+    function callEventful() {
+      var within = getApproxMapRadiusKM($scope._map);
+      within = within < 25 ? within : 25; // limit events search radius to 25km
+      var center = $scope._map.getCenter();
+      var results = Eventful.startGet({
+        where: center.lat + ',' + center.lng,
+        within: within
+      });
+    }
+
+    function getApproxMapRadiusKM() {
+      // FIX: divide by something accurate
+      return $scope._map.getBounds().getNorthEast().
+      distanceTo($scope._map.getCenter()) / 1000;
+    }
 
   }]);
 
@@ -68,10 +86,5 @@
 
 
   }]);
-
-  function getApproxMapRadiusKM(map) {
-    // FIX: divide by something accurate
-    return map.getBounds().getNorthEast().distanceTo(map.getCenter()) / 1000;
-  }
 
 })();
