@@ -76,11 +76,15 @@ module.exports = function(grunt) {
     karma: {
       options: {
         configFile: 'karma.conf.js',
-        browsers: _browsers,
-        plugins: _plugins
       },
       continuous: {
         singleRun: true,
+        browsers: _browsers,
+        plugins: _plugins
+      },
+      quick: {
+        browsers: ['PhantomJS'],
+        plugins: ['karma-jasmine', 'karma-coverage', 'karma-phantomjs-launcher']
       }
     }
   });
