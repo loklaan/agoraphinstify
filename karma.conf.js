@@ -18,10 +18,14 @@ module.exports = function(config) {
       'public/libs/angular-mocks/angular-mocks.js',
       // endbower#dev
       'public/js/*.js',
+      'public/js/services/*.js',
+      'public/js/controllers/*.js',
       'tests/client/*.js'
     ],
     preprocessors: {
       'public/js/*.js': ['coverage'],
+      'public/js/services/*.js': ['coverage'],
+      'public/js/controllers/*.js': ['coverage'],
       'tests/client/*.js': ['coverage']
     },
     exclude: [],

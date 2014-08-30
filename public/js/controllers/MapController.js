@@ -4,9 +4,7 @@
 
  (function() {
 
-  var module = angular.module('AgoroApp.controllers', [
-    'leaflet-directive'
-    ]);
+  var module = angular.module('AgoroApp');
 
   /**
    * Map Controller
@@ -15,11 +13,11 @@
   module.controller('MapController', [
     '$scope',
     'leafletData',
-    'Eventful',
+    'Events',
     'EventMarkers',
     '$rootScope',
     '$timeout',
-  function($scope, leafletData, Eventful, EventMarkers, $rootScope, $timeout) {
+  function($scope, leafletData, Events, EventMarkers, $rootScope, $timeout) {
 
     // MAP DEFAULTS
     angular.extend($scope, {
@@ -64,7 +62,7 @@
       var within = getApproxMapRadiusKM($scope._map);
       within = within < 25 ? within : 25; // limit events search radius to 25km
       var center = $scope._map.getCenter();
-      var results = Eventful.startGet({
+      var results = Events.startGet({
         where: center.lat + ',' + center.lng,
         within: within
       });

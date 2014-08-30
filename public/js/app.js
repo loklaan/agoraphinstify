@@ -6,9 +6,7 @@
 
   var module = angular.module('AgoroApp', [
     'ngRoute',
-    'AgoroApp.controllers',
-    'AgoroApp.directives',
-    'AgoroApp.services',
+    'ngResource',
     'leaflet-directive',
     'angular-loading-bar'
     ]);
