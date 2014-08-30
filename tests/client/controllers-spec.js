@@ -1,9 +1,9 @@
-describe('AgoroApp controllers', function() {
+describe('AgoraApp controllers', function() {
 
   describe('MapController', function() {
     var scope, rootScope, ctrl, leaflet, Event, EventReq;
 
-    beforeEach(module('AgoroApp'));
+    beforeEach(module('AgoraApp'));
 
     beforeEach(inject(function($controller, _$rootScope_, leafletData) {
       scope = {};

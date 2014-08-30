@@ -1,7 +1,7 @@
 {
-  "name": "agorophinstify",
+  "name": "agoraphinstify",
   "version": "0.3.6",
-  "description": "Server for Agorophinstify. And dev flow.",
+  "description": "Server for Agoraphinstify. And dev flow.",
   "scripts": {
     "start": "node server.js",
     "postinstall": "node node_modules/bower/bin/bower install && [ '$NODE_ENV' != 'production' ] && node node_modules/grunt-cli/bin/grunt setup",
@@ -11,15 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/loklaan/agorophinstify.git"
+    "url": "https://github.com/loklaan/agoraphinstify.git"
   },
   "author": "Lochlan Bunn <loklaan@gmail.com>",
   "license": "MIT",
   "private": true,
   "bugs": {
-    "url": "https://github.com/loklaan/agorophinstify/issues"
+    "url": "https://github.com/loklaan/agoraphinstify/issues"
   },
-  "homepage": "https://github.com/loklaan/agorophinstify",
+  "homepage": "https://github.com/loklaan/agoraphinstify",
   "dependencies": {
     "bower": "~1.3.9",
     "errorhandler": "~1.1.1",

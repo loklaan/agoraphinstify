@@ -1,10 +1,10 @@
 /**
- * Agorophinstify Events Service module.
+ * Agoraphinstify Events Service module.
  */
 
 (function() {
 
-  var module = angular.module('AgoroApp');
+  var module = angular.module('AgoraApp');
 
   var api = {
     eventful: {
@@ -108,7 +108,7 @@
 
     /**
      * Removes Eventful entries that do not have enough information.
-     * for Agorophinstify.
+     * for Agoraphinstify.
      * @param  {array} results Array of single events from Eventful
      * @return {array}         New array of filtered events from Eventful
      */

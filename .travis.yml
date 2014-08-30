@@ -10,9 +10,9 @@ after_success:
   - bash scripts/output_coverage.sh | ./node_modules/coveralls/bin/coveralls.js
 deploy:
   provider: heroku
-  app: agorophinstify
+  app: agoraphinstify
   api_key:
     secure: HBnZKmwMyBTVMLb1fPL/dhuRe/6tbG1dT7lcsXK8tVftq6S0/MYMxERoeZJE4dI4ajBjIZoYQf37Z8pqIIeinh3V9Y/2v5JAkHbF6/OQ7jIMQRq1SjF3A1lfy+9yHsLf7w+gOUXJzAc1osp+xlG0GH/yMINnqgTzClovptu2CHk=
 addons:
   code_climate:
-    repo_token: bdf9832b582a9397109979f89815281fce03746517334b643836f90e3d9b9d7e
+    repo_token: d64e6a6dff6daed2fa132cb35544017e3e1d52b4f6975ef1bf80ed986f75eeb1

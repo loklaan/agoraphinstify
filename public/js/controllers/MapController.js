@@ -1,10 +1,10 @@
 /**
- * Agorophinstify Controllers module.
+ * Agoraphinstify Controllers module.
  */
 
  (function() {
 
-  var module = angular.module('AgoroApp');
+  var module = angular.module('AgoraApp');
 
   /**
    * Map Controller

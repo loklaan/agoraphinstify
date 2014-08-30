@@ -1,10 +1,10 @@
 /**
- * Agorophinstify Main module.
+ * Agoraphinstify Main module.
  */
 
 (function() {
 
-  var module = angular.module('AgoroApp', [
+  var module = angular.module('AgoraApp', [
     'ngRoute',
     'ngResource',
     'leaflet-directive',

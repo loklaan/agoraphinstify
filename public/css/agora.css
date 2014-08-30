@@ -11,7 +11,7 @@ html, body, .full-height, .leaflet-container {
   position: relative;
 }
 
-.agoro-header {
+.agora-header {
   position: absolute;
   width: 100%;
   top: 0;
@@ -22,7 +22,7 @@ html, body, .full-height, .leaflet-container {
   padding: 10px 5px 6px 5%;
 }
 
-.agoro-title {
+.agora-title {
   margin: 0;
   padding: 0;
   text-align: left;

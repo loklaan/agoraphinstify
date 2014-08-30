@@ -39,5 +39,5 @@ routes.init(app);
  * Server Start
  */
 http.createServer(app).listen(app.get('port'), function () {
-  console.log('Agorophinstify EXPRESS server listening on port ' + app.get('port') + '...');
+  console.log('Agoraphinstify EXPRESS server listening on port ' + app.get('port') + '...');
 });

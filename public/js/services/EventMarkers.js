@@ -1,10 +1,10 @@
 /**
- * Agorophinstify EventMarkers Service module.
+ * Agoraphinstify EventMarkers Service module.
  */
 
 (function() {
 
-  var module = angular.module('AgoroApp');
+  var module = angular.module('AgoraApp');
 
   /**
    * Map Marker Service for updating a collection of markers.

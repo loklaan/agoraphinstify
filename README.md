@@ -1,11 +1,11 @@
-# Agorophinstify
+# Agoraphinstify
 
-Web mashup that combines Maps, Crowdsourced Photos and Music to give the illest of chills to a suffering Agorophobe.
+Web mashup that combines Maps, Crowdsourced Photos and Music to give the illest of chills to a suffering Agoraphobe.
 
-[![Issues in Progress](https://badge.waffle.io/loklaan/agorophinstify.svg?label=in progress&title=In Progress)](http://waffle.io/loklaan/agorophinstify)
-[![Build Status](https://travis-ci.org/loklaan/agorophinstify.svg?branch=master)](https://travis-ci.org/loklaan/agorophinstify)
-[![Code Climate](https://codeclimate.com/github/loklaan/agorophinstify/badges/gpa.svg)](https://codeclimate.com/github/loklaan/agorophinstify)
-[![Test Coverage](https://codeclimate.com/github/loklaan/agorophinstify/badges/coverage.svg)](https://codeclimate.com/github/loklaan/agorophinstify)
+[![Issues in Progress](https://badge.waffle.io/loklaan/agoraphinstify.svg?label=in progress&title=In Progress)](http://waffle.io/loklaan/agoraphinstify)
+[![Build Status](https://travis-ci.org/loklaan/agoraphinstify.svg?branch=master)](https://travis-ci.org/loklaan/agoraphinstify)
+[![Code Climate](https://codeclimate.com/github/loklaan/agoraphinstify/badges/gpa.svg)](https://codeclimate.com/github/loklaan/agoraphinstify)
+[![Test Coverage](https://codeclimate.com/github/loklaan/agoraphinstify/badges/coverage.svg)](https://codeclimate.com/github/loklaan/agoraphinstify)
 
 ## Installation
 Install with `npm`:

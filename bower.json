@@ -1,11 +1,11 @@
 {
-  "name": "agorophinstify",
+  "name": "agoraphinstify",
   "version": "0.2.0",
-  "homepage": "https://github.com/loklaan/agorophinstify",
+  "homepage": "https://github.com/loklaan/agoraphinstify",
   "authors": [
     "Lochlan Bunn <loklaan@gmail.com>"
   ],
-  "description": "Web mashup that combines Maps, Crowdsourced Photos and Music to give the illest of chills to a suffering Agorophobe.",
+  "description": "Web mashup that combines Maps, Crowdsourced Photos and Music to give the illest of chills to a suffering Agoraphobe.",
   "license": "MIT",
   "private": true,
   "ignore": [
