@@ -37,7 +37,7 @@
         params: {
           category: 'music',
           units: 'km',
-          page_size: 100
+          page_size: 20
         }
       }
     });
@@ -62,7 +62,7 @@
             _searchResults = _searchResults.concat(filterForPerformers(results));
             $rootScope.$emit('eventful:update', _searchResults);
 
-            getNextEventsPage(params);
+            getNextEventsPage(params, currentReq);
           }
         }, function(reason) {
           console.error(reason);
