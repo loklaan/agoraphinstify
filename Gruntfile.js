@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
 
+  require('load-grunt-tasks')(grunt);
+
   // Environment targets
   var _plugins = ['karma-jasmine', 'karma-coverage'];
   var _browsers = [];
@@ -20,6 +22,7 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
+
     pkg: grunt.file.readJSON('package.json'),
     wiredep: {
       target: {
@@ -31,6 +34,7 @@ module.exports = function(grunt) {
           'public/libs/angular-loading-bar/build/loading-bar.css'
         ]
       },
+
       testenv: {
         devDependencies: true,
         src: [
@@ -52,12 +56,14 @@ module.exports = function(grunt) {
         ]
       }
     },
+
     jshint: {
       files: ['Gruntfile.js', 'server.js', 'routes/*', 'public/js/*'],
       options: {
         // None
       }
     },
+
     jasmine_node: {
       options: {
         specFolders: ['tests/server/'],
@@ -73,6 +79,7 @@ module.exports = function(grunt) {
           savePath : "coverage/server/",
       }
     },
+
     karma: {
       options: {
         configFile: 'karma.conf.js',
@@ -86,21 +93,40 @@ module.exports = function(grunt) {
         browsers: ['PhantomJS'],
         plugins: ['karma-jasmine', 'karma-coverage', 'karma-phantomjs-launcher']
       }
+    },
+
+    useminPrepare: {
+      html: 'public/views/index.html',
+      options: {
+        dest: 'public/'
+      }
+    },
+
+    usemin: {
+      html:['public/dist/index.html']
+    },
+
+    copy: {
+      main: {
+        src: 'public/views/index.html', dest: 'public/dist/index.html'
+      }
     }
+
   });
 
-  // Load the plugins
-  grunt.loadNpmTasks('grunt-wiredep');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-jasmine-node-coverage');
-  grunt.loadNpmTasks('grunt-karma');
-
   // Default tasks.
+  grunt.registerTask('default', []);
   grunt.registerTask('setup', ['wiredep']);
-  grunt.registerTask('heroku:production', ['wiredep']);
+  grunt.registerTask('heroku:production', [
+    'wiredep',
+    'copy',
+    'useminPrepare',
+    'concat',
+    'uglify',
+    'cssmin',
+    'usemin']);
   // jasmine_node must come after karma.conf.js gets
   // wrongfullly covered
   grunt.registerTask('test', ['jshint', 'karma:continuous', 'jasmine_node']);
-  grunt.registerTask('default', []);
 
 };

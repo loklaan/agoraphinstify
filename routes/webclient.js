@@ -8,6 +8,7 @@
   var path = require('path');
 
   var templates = path.join(__dirname, '../public/views/');
+  var distribution = path.join(__dirname, '../public/dist/');
 
   /**
    * Intialises declared web client routes.
@@ -18,7 +19,8 @@
      * Main index template.
      */
     app.get('/', function(req, res){
-      res.sendFile(templates + 'index.html');
+      var indexPath = process.env.NODE_ENV === 'production' ? distribution : templates;
+      res.sendFile(indexPath + 'index.html');
     });
 
     /**

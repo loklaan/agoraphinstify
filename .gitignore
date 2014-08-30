@@ -2,4 +2,7 @@
 node_modules
 public/libs/
 
+// Generated files
 coverage
+public/dist
+.tmp
