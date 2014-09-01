@@ -58,10 +58,10 @@
       marker.events.forEach(function(event, index, events) {
         if (angular.isArray(event.performers.performer)) {
           event.performers.performer.forEach(function(performer) {
-            marker.message += performer.name + ', ';
+            marker.message += linkifyPerformer(performer, event) + ', ';
           });
         } else {
-          marker.message += event.performers.performer.name + ', ';
+          marker.message += linkifyPerformer(event.performers.performer, event) + ', ';
         }
 
         // remove ', ' in last loop
@@ -69,6 +69,11 @@
           marker.message = marker.message.slice(0, -2);
         }
       });
+    }
+
+    function linkifyPerformer(performer, event) {
+      return '<a href="/e/' + event.id.toLowerCase() + '/' + performer.id.toLowerCase() + '">' +
+             performer.name + '</a>';
     }
 
     return {
