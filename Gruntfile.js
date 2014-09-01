@@ -20,6 +20,10 @@ module.exports = function(grunt) {
     _browsers.push('PhantomJS');
   }
 
+  if (process.env.NODE_ENV === 'production') {
+    console.log('Production environment detected by Grunt.');
+  }
+
   // Project configuration.
   grunt.initConfig({
 

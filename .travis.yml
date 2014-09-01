@@ -11,6 +11,7 @@ after_success:
 deploy:
   provider: heroku
   app: agoraphinstify
+  buildpack: https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt.git
   api_key:
     secure: HBnZKmwMyBTVMLb1fPL/dhuRe/6tbG1dT7lcsXK8tVftq6S0/MYMxERoeZJE4dI4ajBjIZoYQf37Z8pqIIeinh3V9Y/2v5JAkHbF6/OQ7jIMQRq1SjF3A1lfy+9yHsLf7w+gOUXJzAc1osp+xlG0GH/yMINnqgTzClovptu2CHk=
 addons:
