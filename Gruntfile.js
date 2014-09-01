@@ -36,7 +36,8 @@ module.exports = function(grunt) {
         exclude: [
           'public/libs/leaflet/dist/leaflet-src.js',
           'public/libs/angular-loading-bar/build/loading-bar.css'
-        ]
+        ],
+        ignorePath: '..'
       },
 
       testenv: {
