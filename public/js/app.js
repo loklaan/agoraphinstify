@@ -26,13 +26,13 @@
       controllerAs: 'map'
     }).
     // Instify view by event
-    when('/event/:eventId', {
+    when('/e/:eventId/:performerId', {
       templateUrl: '../views/partials/instify.html',
       controller: 'InstifyController',
       controllerAs: 'instify'
     }).
     // Instify view by venue
-    when('/venue/:venueId', {
+    when('/v/:venueId', {
       templateUrl: '../views/partials/instify.html',
       controller: 'InstifyController',
       controllerAs: 'instify'
