@@ -1,33 +1,48 @@
 /**
- * Agoraphinstify EventMarkers Service module.
+ * Map Marker Service for Agoraphinstify Map.
+ *
+ * Responsible for updating Map Markers. Subscriber to
+ * Events service. Publishes to markers.
+ * See Factory Public Functions for more.
  */
 
 (function() {
 
   var module = angular.module('AgoraApp');
 
-  /**
-   * Map Marker Service for updating a collection of markers.
-   * @return {Object}  Exposes a single service property, markers
-   *
-   *     @markers  {object}
-   *         Collection of marker objects
-   */
   module.factory('EventMarkers', [
     '$rootScope',
   function($rootScope) {
+
+/* ==========================================================================
+   Factory Variables
+   ========================================================================== */
+
     var _markers = {};
 
+
+/* ==========================================================================
+   Factory Publish Functions
+   ========================================================================== */
+
     // Eventful ng service will publish new event results
-    $rootScope.$on('events:update', eventUpdateMarkers);
+    $rootScope.$on('events:update', updateMarkers);
 
     /**
-     * Callback function for events:update listener. Updates EventMarkers
-     * with new eventful data. Broadcasts update of markers.
+     * Publishes new Markers to subscribers.
+     */
+    function publishMarkers() {
+      $rootScope.$broadcast('markers:update', _markers);
+    }
+
+    /**
+     * Callback function for events:update listener. Updates Markers.
+     * with new eventful data.
+     *
      * @param  {object} listenEvent Angular event listener object
      * @param  {array}  data        Array of events from Eventful
      */
-    function eventUpdateMarkers(listenEvent, data) {
+    function updateMarkers(listenEvent, data) {
       _markers = {};
       _.forEach(data, function(event) {
         markerId = event.venue_name.replace(/\s|\W/g, '').toLowerCase();
@@ -42,11 +57,16 @@
         }
         _markers[markerId].events.push(event);
       });
-      setMarkersPerformers(_markers);
-      $rootScope.$broadcast('markers:update', _markers);
+      setMarkersMessages(_markers);
+      publishMarkers();
     }
 
-    function setMarkersPerformers(markers) {
+
+/* ==========================================================================
+   Factory Private Functions
+   ========================================================================== */
+
+    function setMarkersMessages(markers) {
       _.forEach(markers, function(marker) {
           appendPerformers(marker);
       });
@@ -56,10 +76,10 @@
       _.forEach(marker.events, function(event, index, events) {
         if (angular.isArray(event.performers.performer)) {
           _.forEach(event.performers.performer, function(performer) {
-            marker.message += linkifyPerformer(performer, event) + ', ';
+            marker.message += linkifyPerformerName(performer, event) + ', ';
           });
         } else {
-          marker.message += linkifyPerformer(event.performers.performer, event) + ', ';
+          marker.message += linkifyPerformerName(event.performers.performer, event) + ', ';
         }
 
         // remove ', ' in last loop
@@ -69,10 +89,11 @@
       });
     }
 
-    function linkifyPerformer(performer, event) {
+    function linkifyPerformerName(performer, event) {
       return '<a href="e/' + event.id.toLowerCase() + '/' + performer.id.toLowerCase() + '">' +
-             performer.name + '</a>';
+        performer.name + '</a>';
     }
+
 
     return {
       markers: function() {

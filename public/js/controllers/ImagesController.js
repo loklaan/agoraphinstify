@@ -38,10 +38,13 @@
 
     $scope.getImages = function() {
       Events.getEvent({id: $routeParams.eventId},
+        // Success API call
         function(event) {
           $scope.event = event;
           Images.startGet(event.venue_name, event.latitude, event.longitude);
-        }, function(reasion) {
+        },
+        // Failed API call
+        function(reasion) {
           console.error(reason);
         });
     };
