@@ -7,6 +7,7 @@
   var module = angular.module('AgoraApp', [
     'ngRoute',
     'ngResource',
+    'ngAnimate',
     'leaflet-directive',
     'angular-loading-bar'
     ]);

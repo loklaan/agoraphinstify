@@ -41,6 +41,33 @@ html, body, .full-height, .leaflet-container {
  * Animations
  */
 
+/**/
+/* Angular Directive Animations */
+/**/
+
+.repeat-animation.ng-move,
+.repeat-animation.ng-enter,
+.repeat-animation.ng-leave {
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+}
+
+.repeat-animation.ng-leave.ng-leave-active,
+.repeat-animation.ng-move,
+.repeat-animation.ng-enter {
+  opacity:0;
+}
+
+.repeat-animation.ng-leave,
+.repeat-animation.ng-move.ng-move-active,
+.repeat-animation.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
+/**/
+/* Resource Loading Bar and Spinner */
+/**/
+
 #loading-bar,
 #loading-bar-spinner {
   pointer-events: none;

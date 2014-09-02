@@ -1,11 +1,11 @@
 <div class="container-fluid instify" ng-controller="ImagesController as imgCtrl">
-  <div class="row" ng-show="showWarning()">
-    <section class="alert alert-warning text-center" role="alert">
+  <div class="row">
+    <section class="alert alert-warning text-center" role="alert" ng-show="showWarning()">
       Oh snap! <strong>We didn't find a place named <em>{{event.venue_name}}</em></strong>... Want to <a href="" ng-click="getImages()">try again</a>?
     </section>
   </div>
   <div class="row">
-    <section class="col-md-3" ng-repeat="image in images">
+    <section class="col-md-3 repeat-animation" ng-repeat="image in images">
       <div class="thumbnail">
         <img class="img-responsive img-rounded" ng-src="{{image.url}}">
       </div>
