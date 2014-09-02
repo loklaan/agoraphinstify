@@ -8,12 +8,6 @@ before_script:
 after_success:
   - bash scripts/output_coverage.sh | ./node_modules/codeclimate-test-reporter/bin/codeclimate.js
   - bash scripts/output_coverage.sh | ./node_modules/coveralls/bin/coveralls.js
-deploy:
-  provider: heroku
-  app: agoraphinstify
-  buildpack: https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt.git
-  api_key:
-    secure: HBnZKmwMyBTVMLb1fPL/dhuRe/6tbG1dT7lcsXK8tVftq6S0/MYMxERoeZJE4dI4ajBjIZoYQf37Z8pqIIeinh3V9Y/2v5JAkHbF6/OQ7jIMQRq1SjF3A1lfy+9yHsLf7w+gOUXJzAc1osp+xlG0GH/yMINnqgTzClovptu2CHk=
 addons:
   code_climate:
     repo_token: d64e6a6dff6daed2fa132cb35544017e3e1d52b4f6975ef1bf80ed986f75eeb1
