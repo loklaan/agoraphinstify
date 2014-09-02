@@ -29,7 +29,11 @@
 
     var _images = [],
         _request = {id: 0},
-        LOCATION_REPEATS = 10;
+        LOCATION = {
+          pingrepeats: 20,
+          pingvariance: 0.001,
+          distance: 50,
+        };
 
 
 /* ==========================================================================
@@ -42,7 +46,7 @@
         get: {
           method: 'GET',
           params: {
-            distance: 50
+            distance: LOCATION.distance
           }
         }
       });
@@ -69,8 +73,9 @@
      * @param  {Number} currentReq  Request instance id of the Service
      */
     function getLocations(venueName, params, currentReq) {
-      var plusOrMinus = Math.round() < 0.5 ? -1 : 1;
       var tempParams = params;
+
+      console.log('Begin Instagram location barage.');
 
       do {
         NearbyLocations.get(tempParams,
@@ -93,20 +98,31 @@
                   return {locationId: location.id};
                 }));
 
-              if (++_request.responses >= LOCATION_REPEATS) {
-                getLocationImages(currentReq);
+              if (++_request.responses >= LOCATION.pingrepeats) {
+                _request.imagesParams = _.uniq(_request.imagesParams, 'locationId');
+
+                if (_request.imagesParams.length > 0) {
+                  getLocationImages(currentReq);
+                } else {
+                  $rootScope.$broadcast('images:locationfail', venueName);
+                }
               }
             }
           }, function(reason) {
             console.error(reason);
           });
 
-        tempParams.lat =  params.lat + plusOrMinus * Math.random() * 0.001;
-        tempParams.lng =  params.lng + plusOrMinus * Math.random() * 0.001;
+        tempParams.lat = params.lat + hackyPingVariance();
+        tempParams.lng = params.lng + hackyPingVariance();
+        console.log('Coords: ' + tempParams.lat + ', ' + tempParams.lng);
         _request.attempts--;
       } while (_request.attempts > 0);
     }
 
+    function hackyPingVariance() {
+      var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+      return (plusOrMinus * (Math.random() * LOCATION.pingvariance));
+    }
     function compareVenueNames(one, two) {
       one = one.toLowerCase();
       two = two.toLowerCase();
@@ -119,7 +135,7 @@
      * @param  {Number} currentReq  Request instance id of the Service
      */
     function getLocationImages(currentReq) {
-      _.forEach(_request.imagesParams, function(params, index) {
+      _.forEach(_request.imagesParams, function(params) {
         LocationMedia.get(params,
           function(results) {
             if (currentReq !== _request.id) {
@@ -130,15 +146,19 @@
               _images.push(imageData.images.standard_resolution);
             });
 
-            $rootScope.$broadcast('images:update', _images);
-
-            if (angular.isDefined(results.pagination)) {
+            if (angular.isDefined(results.pagination) && angular.isDefined(results.pagination.next_max_id)) {
               // Queue up params for getNextImagesPage() that have other pages
+              var index = _.findIndex(_request.imagesParams, {
+                locationId: params.locationId
+              });
               _request.imagesParams[index].max_id = results.pagination.next_max_id;
             } else {
               // Remove params that have no pages left
-              _request.imagesParams = _.without(_request.imagesParams, params);
+              _request.imagesParams = _.rest(_request.imagesParams,
+                {locationId: params.locationId});
             }
+
+            $rootScope.$broadcast('images:update', _images, _request.imagesParams.length > 0);
           }, function(reason) {
             console.error(reason);
           });
@@ -162,7 +182,7 @@
 
     function resetState() {
       _images = [];
-      _request.attempts = LOCATION_REPEATS;
+      _request.attempts = LOCATION.pingrepeats;
       _request.responses = 0;
       _request.imagesParams = [];
       _request.matches = [];

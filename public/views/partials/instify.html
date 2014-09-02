@@ -1,5 +1,17 @@
-<div ng-controller="ImagesController as imgCtrl">
-  <section class="thumbnail" ng-repeat="image in images">
-    <img ng-src="{{image.url}}">
-  </section>
+<div class="container-fluid instify" ng-controller="ImagesController as imgCtrl">
+  <div class="row" ng-show="showWarning()">
+    <section class="alert alert-warning text-center" role="alert">
+      Oh snap! <strong>We didn't find a place named <em>{{event.venue_name}}</em></strong>... Want to <a href="" ng-click="getImages()">try again</a>?
+    </section>
+  </div>
+  <div class="row">
+    <section class="col-md-3" ng-repeat="image in images">
+      <div class="thumbnail">
+        <img class="img-responsive img-rounded" ng-src="{{image.url}}">
+      </div>
+    </section>
+  </div>
+  <div class="row" ng-show="hasMore">
+    <button type="button" class="btn btn-lg btn-default btn-block" ng-click="getMoreImages()">More...</button>
+  </div>
 </div>
