@@ -29,7 +29,7 @@
      */
     function eventUpdateMarkers(listenEvent, data) {
       _markers = {};
-      data.forEach(function(event) {
+      _.forEach(data, function(event) {
         markerId = event.venue_name.replace(/\s|\W/g, '').toLowerCase();
         if (!angular.isDefined(_markers[markerId])) {
           _markers[markerId] = {
@@ -47,17 +47,15 @@
     }
 
     function setMarkersPerformers(markers) {
-      for (var marker in markers) {
-        if (markers.hasOwnProperty(marker)) {
-          appendPerformers(markers[marker]);
-        }
-      }
+      _.forEach(markers, function(marker) {
+          appendPerformers(marker);
+      });
     }
 
     function appendPerformers(marker) {
-      marker.events.forEach(function(event, index, events) {
+      _.forEach(marker.events, function(event, index, events) {
         if (angular.isArray(event.performers.performer)) {
-          event.performers.performer.forEach(function(performer) {
+          _.forEach(event.performers.performer, function(performer) {
             marker.message += linkifyPerformer(performer, event) + ', ';
           });
         } else {
@@ -72,12 +70,14 @@
     }
 
     function linkifyPerformer(performer, event) {
-      return '<a href="/e/' + event.id.toLowerCase() + '/' + performer.id.toLowerCase() + '">' +
+      return '<a href="e/' + event.id.toLowerCase() + '/' + performer.id.toLowerCase() + '">' +
              performer.name + '</a>';
     }
 
     return {
-      markers: _markers
+      markers: function() {
+        return _markers;
+      }
     };
   }]);
 

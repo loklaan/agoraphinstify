@@ -15,6 +15,7 @@ module.exports = function(config) {
       'public/libs/leaflet/dist/leaflet.js',
       'public/libs/angular-leaflet-directive/dist/angular-leaflet-directive.js',
       'public/libs/angular-loading-bar/build/loading-bar.js',
+      'public/libs/lodash/dist/lodash.compat.js',
       'public/libs/angular-mocks/angular-mocks.js',
       // endbower#dev
       'public/js/*.js',

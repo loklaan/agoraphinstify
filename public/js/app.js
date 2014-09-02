@@ -12,9 +12,10 @@
     ]);
 
   module.config([
+    '$locationProvider',
     '$routeProvider',
     'cfpLoadingBarProvider',
-  function($routeProvider, cfpLoadingBarProvider) {
+  function($locationProvider, $routeProvider, cfpLoadingBarProvider) {
 
     cfpLoadingBarProvider.includeBar = false;
 
@@ -27,16 +28,18 @@
     }).
     // Instify view by event
     when('/e/:eventId/:performerId', {
-      templateUrl: '../views/partials/instify.html',
+      templateUrl: '/partials/instify',
       controller: 'InstifyController',
       controllerAs: 'instify'
     }).
     // Instify view by venue
     when('/v/:venueId', {
-      templateUrl: '../views/partials/instify.html',
+      templateUrl: '/partials/instify',
       controller: 'InstifyController',
       controllerAs: 'instify'
     });
+
+    $locationProvider.html5Mode(true);
   }]);
 
 })();

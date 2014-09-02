@@ -26,19 +26,33 @@
     '$resource',
     '$rootScope',
   function($resource, $rootScope){
-    var _searchResults, _pages, _page, _request = {id: 0};
+    var _events, _pages, _page, _request = {id: 0};
     resetState();
 
-    var EventSearch = $resource(api.eventful.url + '/events/search', {}, {
-      get: {
-        method: 'GET',
-        params: {
-          category: 'music',
-          units: 'km',
-          page_size: 20
+    var EventSearch = $resource(api.eventful.url + '/events/search',
+      {},
+      {
+        get: {
+          method: 'GET',
+          params: {
+            category: 'music',
+            units: 'km',
+            page_size: 20
+          }
         }
-      }
-    });
+      });
+
+    var SingleEvent = $resource(api.eventful.url + '/events/get',
+      {},
+      {
+        get: {
+          method: 'GET'
+        }
+      });
+
+    function getEvent(params, success, fail) {
+      SingleEvent.get(params, success, fail);
+    }
 
     function getEvents(params, currentReq) {
       EventSearch.get(params,
@@ -57,8 +71,8 @@
             _request.timeout = 0;
             _pages = parseInt(results.page_count);
             _page = parseInt(results.page_number);
-            _searchResults = _searchResults.concat(filterForPerformers(results));
-            $rootScope.$emit('events:update', _searchResults);
+            _events = _events.concat(filterForPerformers(results));
+            $rootScope.$emit('events:update', _events);
 
             getNextEventsPage(params, currentReq);
           }
@@ -99,7 +113,7 @@
      * Resets the current state of the Eventful service.
      */
     function resetState() {
-      _searchResults = [];
+      _events = [];
       _pages = 0;
       _page = 0;
       _request.queue = [];
@@ -118,10 +132,18 @@
       });
     }
 
+    function stopRequests() {
+      _request.id++;
+    }
+
     // see Service comments
     return {
       startGet: getNewEvents,
-      results: _searchResults
+      stopGet: stopRequests,
+      getEvent: getEvent,
+      events: function() {
+        return _events;
+      }
     };
   }]);
 

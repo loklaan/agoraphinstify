@@ -1,5 +1,5 @@
 /**
- * Agoraphinstify Controllers module.
+ * Agoraphinstify Map Controller.
  */
 
  (function() {

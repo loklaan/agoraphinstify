@@ -2,13 +2,13 @@
  * Agoraphinstify Images Service module.
  */
 
-(function() {
+(function(_) {
 
   var module = angular.module('AgoraApp');
 
   var api = {
-    eventful: {
-      url: '/api/spotify'
+    instagram: {
+      url: '/api/instagram'
     }
   };
 
@@ -21,10 +21,22 @@
    */
   module.factory('Images', [
     '$resource',
-  function($resource) {
-    var _images = [], _request = {id: 0};
+    '$rootScope',
+  function($resource, $rootScope) {
+/* ==========================================================================
+   Factory Variables
+   ========================================================================== */
 
-    var NearbyLocations = $resource(api.spotify.url + '/locations/search',
+    var _images = [],
+        _request = {id: 0},
+        LOCATION_REPEATS = 10;
+
+
+/* ==========================================================================
+   REST Client Functions
+   ========================================================================== */
+
+    var NearbyLocations = $resource(api.instagram.url + '/locations/search',
       {},
       {
         get: {
@@ -35,13 +47,18 @@
         }
       });
 
-    var LocationMedia = $resource(api.spotify.url + '/locations/:locationId/media/recent',
+    var LocationMedia = $resource(api.instagram.url + '/locations/:locationId/media/recent',
       {},
       {
         get: {
           method: 'GET'
         }
       });
+
+
+/* ==========================================================================
+   Factory Functions
+   ========================================================================== */
 
     /**
      * Finds Instagram location entities within a 50m radius of the
@@ -52,53 +69,80 @@
      * @param  {Number} currentReq  Request instance id of the Service
      */
     function getLocations(venueName, params, currentReq) {
-      NearbyLocations.get(params,
-        function(results) {
-          if (currentReq !== _request.id) {
-            return;
-          }
+      var plusOrMinus = Math.round() < 0.5 ? -1 : 1;
+      var tempParams = params;
 
-          // TODO: add timeout for response errors
-          var matchingVenues = [];
-          results.data.forEach(function(location, index, locations) {
-            if (venue.toLowerCase() === location.name.toLowercase()) {
-              matchingVenues.push(location.id);
+      do {
+        NearbyLocations.get(tempParams,
+          function(results) {
+            if (currentReq !== _request.id) {
+              return;
+            } else if (results.data.length > 0) {
+
+              var resultMatches = _.filter(results.data,
+                function(location) {
+                  var isMatchup = compareVenueNames(venueName, location.name);
+                  if (isMatchup) {
+                    console.log('Find matching venue: ' + location.name);
+                  }
+                  return isMatchup;
+              });
+
+              _request.imagesParams = _.union(_request.imagesParams,
+                _.map(resultMatches, function(location) {
+                  return {locationId: location.id};
+                }));
+
+              if (++_request.responses >= LOCATION_REPEATS) {
+                getLocationImages(currentReq);
+              }
             }
+          }, function(reason) {
+            console.error(reason);
           });
-          matchingVenues.forEach(function(locationId, index, locationIds) {
-            getImages({locationId: locationId}, currentReq);
-          });
-        }, function(reason) {
-          console.error(reason);
-        });
+
+        tempParams.lat =  params.lat + plusOrMinus * Math.random() * 0.001;
+        tempParams.lng =  params.lng + plusOrMinus * Math.random() * 0.001;
+        _request.attempts--;
+      } while (_request.attempts > 0);
+    }
+
+    function compareVenueNames(one, two) {
+      one = one.toLowerCase();
+      two = two.toLowerCase();
+      return one.indexOf(two) !== -1 || two.indexOf(one) !== -1;
     }
 
     /**
      * Gets Instagram images for an Instagram location record. Broadcasts an
      * update event on new Images.
-     * @param  {object} params      API query key/values
      * @param  {Number} currentReq  Request instance id of the Service
      */
-    function getImages(params, currentReq) {
-      LocationMedia.get(params,
-        function(results) {
-          if (currentReq !== _request.id) {
-            return;
-          }
+    function getLocationImages(currentReq) {
+      _.forEach(_request.imagesParams, function(params, index) {
+        LocationMedia.get(params,
+          function(results) {
+            if (currentReq !== _request.id) {
+              return;
+            }
 
-          results.data.forEach(function(image, index, images) {
-            _images.push(image.images.standard_resolution);
+            _.forEach(results.data, function(imageData) {
+              _images.push(imageData.images.standard_resolution);
+            });
+
+            $rootScope.$broadcast('images:update', _images);
+
+            if (angular.isDefined(results.pagination)) {
+              // Queue up params for getNextImagesPage() that have other pages
+              _request.imagesParams[index].max_id = results.pagination.next_max_id;
+            } else {
+              // Remove params that have no pages left
+              _request.imagesParams = _.without(_request.imagesParams, params);
+            }
+          }, function(reason) {
+            console.error(reason);
           });
-
-          $rootScope.$broadcast('images:update', _images);
-
-          if (angular.isDefined(results.pagination)) {
-            params.max_id = results.pagination.nex_max_id;
-            getImages(params, currentReq);
-          }
-        }, function(reason) {
-          console.error(reason);
-        });
+      });
     }
 
     /**
@@ -109,17 +153,34 @@
      */
     function getNewImages(venueName, latitude, longitute) {
       resetState();
-      getLocations(venueName, {lat: latitude, lng: longitute}, ++_request.id);
+      getLocations(venueName, {lat: parseFloat(latitude), lng: parseFloat(longitute)}, ++_request.id);
+    }
+
+    function getNextImagesPage() {
+      getLocationImages(_request.id);
     }
 
     function resetState() {
       _images = [];
+      _request.attempts = LOCATION_REPEATS;
+      _request.responses = 0;
+      _request.imagesParams = [];
+      _request.matches = [];
+    }
+
+    function stopRequests() {
+      _request.id++;
     }
 
     // see Service comments
     return {
-      startGet: getNewImages
+      startGet: getNewImages,
+      getNext: getNextImagesPage,
+      stopGet: stopRequests,
+      images: function() {
+        return _images;
+      }
     };
   }]);
 
-})();
+})(_);

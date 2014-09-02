@@ -1,8 +1,5 @@
-<div>
-  <section>
-    Instagram Images
-  </section>
-  <section>
-    Spotify Player
+<div ng-controller="ImagesController as imgCtrl">
+  <section class="thumbnail" ng-repeat="image in images">
+    <img ng-src="{{image.url}}">
   </section>
 </div>
