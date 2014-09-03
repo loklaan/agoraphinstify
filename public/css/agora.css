@@ -11,14 +11,17 @@ html, body, .full-height, .leaflet-container {
   position: relative;
 }
 
-.agora-header {
+.agora-header, .musicfy {
   position: fixed;
   width: 100%;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.agora-header {
   top: 0;
   right: 0;
   margin: 0;
   border-bottom: solid 5px #5F5F5F;
-  background: rgba(255, 255, 255, 0.5);
   padding: 10px 5px 6px 5%;
 }
 
@@ -33,8 +36,26 @@ html, body, .full-height, .leaflet-container {
   color: #5F5F5F;
 }
 
+.musicfy {
+  bottom: 0;
+  right: 0;
+  margin: 0;
+  border-top: solid 5px #5F5F5F;
+  padding: 10px 0 5px 0;
+}
+
+.player-group {
+  width: auto;
+}
+
+.player {
+  display: table;
+}
+
 .instify {
-  margin-top: 70px;
+  padding-top: 70px;
+  padding-bottom: 70px;
+  overflow: hidden;
 }
 
 /**

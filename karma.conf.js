@@ -16,6 +16,8 @@ module.exports = function(config) {
       'public/libs/angular-leaflet-directive/dist/angular-leaflet-directive.js',
       'public/libs/angular-loading-bar/build/loading-bar.js',
       'public/libs/lodash/dist/lodash.compat.js',
+      'public/libs/angular-ui-router/release/angular-ui-router.js',
+      'public/libs/angular-audio/app/angular.audio.js',
       'public/libs/angular-mocks/angular-mocks.js',
       // endbower#dev
       'public/js/*.js',

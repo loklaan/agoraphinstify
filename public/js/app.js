@@ -8,6 +8,7 @@
     'ngRoute',
     'ngResource',
     'ngAnimate',
+    'ngAudio',
     'leaflet-directive',
     'angular-loading-bar'
     ]);

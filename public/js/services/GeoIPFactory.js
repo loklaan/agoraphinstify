@@ -13,7 +13,8 @@
 
   module.factory('GeoIP', [
     '$resource',
-  function($resource) {
+    '$rootScope',
+  function($resource, $rootScope) {
 
 /* ==========================================================================
    Factory Variables
@@ -32,8 +33,9 @@
     GeoIPFactory.getVisitorGeoIP = function() {
       GeoIPLocation.get(
         // Success API call
-        function(data) {
-          _geoip = data;
+        function(geoipData) {
+          _geoip = geoipData;
+          $rootScope.$broadcast('geoip:new', _geoip);
         },
         // Failed API call
         function(reason) {
@@ -43,7 +45,7 @@
     };
 
     GeoIPFactory.getCountryCode = function() {
-      return _geoip.country_code;
+      return _geoip ? _geoip.country_code : null;
     };
 
 
@@ -57,6 +59,13 @@
           method: 'GET'
         }
       });
+
+
+/* ==========================================================================
+   Immediately Invoked
+   ========================================================================== */
+
+    GeoIPFactory.getVisitorGeoIP();
 
 
     return GeoIPFactory;

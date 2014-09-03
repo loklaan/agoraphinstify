@@ -37,15 +37,11 @@
     };
 
     $scope.getImages = function() {
-      Events.getEvent({id: $routeParams.eventId},
+      Events.getEvent($routeParams.eventId,
         // Success API call
         function(event) {
           $scope.event = event;
           Images.startGet(event.venue_name, event.latitude, event.longitude);
-        },
-        // Failed API call
-        function(reasion) {
-          console.error(reason);
         });
     };
     $scope.getImages();

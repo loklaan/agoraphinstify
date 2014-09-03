@@ -64,12 +64,38 @@
      * Get a single Event from Eventful. Callback for success will
      * have query results in first argument.
      *
-     * @param  {object} params   Eventful API parameters
-     * @param  {[type]} success  Callback on successful query
-     * @param  {[type]} fail     Callback on failed query
+     * @param  {string}   eventId          Eventful Event ID
+     * @param  {function} successCallback  Callback on successful query
      */
-    EventsFactory.getEvent = function(params, success, fail) {
-      SingleEvent.get(params, success, fail);
+    EventsFactory.getEvent = function(eventId, successCallback) {
+      SingleEvent.get({
+        id: eventId
+      },
+      successCallback,
+      // Failed API call
+      function(reason) {
+        console.error(reason);
+      });
+    };
+
+    /**
+     * Get a seng Performer from Eventful. Callback for success will
+     * have query results in first aurgument.
+     *
+     * @param  {string}   performerId     Eventful Performer ID
+     * @param  {function} successCallback Callback on successful query
+     */
+    EventsFactory.getPerformer = function(performerId, successCallback) {
+      SinglePerformer.get({
+        id: performerId
+      },
+      // Success API call
+      successCallback,
+      // Failed API call
+      function(reason) {
+        console.error(reason);
+      }
+      );
     };
 
 
@@ -86,7 +112,7 @@
      */
     function getEvents(params, currentReq) {
       EventSearch.get(params,
-        // Success
+        // Success API call
         function(results) {
 
           if (currentReq !== _request.id) {
@@ -178,6 +204,11 @@
       }
     });
 
+    var SinglePerformer= $resource(API + '/performers/get', {}, {
+      get: {
+        method: 'GET'
+      }
+    });
 
 /* ==========================================================================
    Utility Functions
