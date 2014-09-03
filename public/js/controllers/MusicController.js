@@ -23,7 +23,6 @@
 
     // Artist queuing depends on Browsers URL location
     $scope.$on('$routeChangeSuccess', function(event, current, previous) {
-      // if (angular.isDefined($routeParams.performerId)) {
       if (angular.isDefined(current.params.performerId)) {
         Events.getPerformer(current.params.performerId,
           function(performer) {
@@ -34,7 +33,7 @@
     });
 
     $scope.track = false;
-    $rootScope.$on('music:newtrack', function(event, track) {
+    $rootScope.$on('music:playing', function(event, track) {
       $scope.track = track;
     });
 
