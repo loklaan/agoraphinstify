@@ -29,7 +29,8 @@
 
     var MusicFactory = {},
         _tracks = {},
-        _country_code;
+        _country_code = null;
+        _blocked_queue = null;
 
 
 /* ==========================================================================
@@ -56,11 +57,16 @@
     MusicFactory.play = function() {
       if (angular.isUndefined(_tracks.current.audio)) {
         _tracks.current.audio = ngAudio.play(_tracks.current.preview_url);
-      }
 
-      // TODO: listen for a track to end, to next()
-      // attachListeners(_tracks.current.audio, AUDIO_EVENTS.end, this.next);
-      // _tracks.current.audio.play();
+        $timeout(function() {
+          return angular.isUndefined(_tracks.current.audio.audio);
+        }, 2000)
+        .then(function() {
+          attachListeners(_tracks.current.audio, AUDIO_EVENTS.end, MusicFactory.next);
+        });
+      } else {
+        _tracks.current.audio.play();
+      }
 
       // Publish to track info listeners
       $rootScope.$broadcast('music:playing', _tracks.current);
@@ -72,6 +78,7 @@
     MusicFactory.pause = function() {
       if (angular.isDefined(_tracks.current.audio)) {
         _tracks.current.audio.pause();
+        $rootScope.$broadcast('music:paused');
       }
     };
 
@@ -93,13 +100,13 @@
      */
     MusicFactory.next = function() {
       if (angular.isDefined(_tracks.current.audio)) {
-        detachListeners(_tracks.current.audio, AUDIO_EVENTS.end);
-        _tracks.current.audio.stop();
+        stopTrack(_tracks.current.audio);
 
         _tracks.queued.unshift(_tracks.current);
         _tracks.current = _tracks.queued.pop();
 
-        this.play();
+        $rootScope.$broadcast('music:newtrack', _tracks.current);
+        MusicFactory.play();
       }
     };
 
@@ -109,13 +116,13 @@
      */
     MusicFactory.back = function() {
       if (angular.isDefined(_tracks.current.audio)) {
-        detachListeners(_tracks.current.audio, AUDIO_EVENTS.end);
-        _tracks.current.audio.stop();
+        stopTrack(_tracks.current.audio);
 
         _tracks.queued.push(_tracks.current);
         _tracks.current = _tracks.queued.shift();
 
-        this.play();
+        $rootScope.$broadcast('music:newtrack', _tracks.current);
+        MusicFactory.play();
       }
     };
 
@@ -137,11 +144,6 @@
         },
         // Success API call
         function(searchData) {
-          // FIX: Hacky GeoIP check
-          // GeoIP may be lagging behind in it's request
-          while (GeoIP.getCountryCode() === null) {
-            $timeout(200);
-          }
           // Skim for the first artist
           callback(searchData.artists.items[0].id);
         },
@@ -159,20 +161,31 @@
      * @param  {string} artistId Spotify Artist ID
      */
     function queueTopTracks(artistId) {
-      ArtistTopTracks.get({
-          id: artistId,
-          country: _country_code
-        },
-        // Success API call
-        function(tracksData) {
-          _tracks.queued = tracksData.tracks;
-          _tracks.current = _tracks.queued.pop();
-        },
-        // Failed API call
-        function(reason) {
-          console.error(reason);
-        }
-      );
+      if (_country_code === null) {
+        _blocked_queue = artistId;
+      } else {
+        ArtistTopTracks.get({
+            id: artistId,
+            country: _country_code
+          },
+          // Success API call
+          function(tracksData) {
+            _tracks.queued = tracksData.tracks;
+            _tracks.current = _tracks.queued.pop();
+            $rootScope.$broadcast('music:newtrack', _tracks.current);
+          },
+          // Failed API call
+          function(reason) {
+            console.error(reason);
+          }
+        );
+      }
+    }
+
+    function stopTrack(track) {
+      detachListeners(track, AUDIO_EVENTS.end);
+      track.stop();
+      $rootScope.$broadcast('music:paused');
     }
 
     function attachListeners(audio, event, callback) {
@@ -185,6 +198,10 @@
 
     $rootScope.$on('geoip:new', function(event, geoip) {
       _country_code = geoip.country_code;
+      if (_blocked_queue !== null) {
+        queueTopTracks(_blocked_queue);
+        _blocked_queue = null;
+      }
     });
 
 

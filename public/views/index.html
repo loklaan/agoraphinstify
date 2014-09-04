@@ -36,26 +36,7 @@
 
   <div class="agora-header">
     <a href="/"><h1 class="agora-title navbar-brand">AGORAPHINSTIFY</h1></a>
-  </div>
-
-  <div class="musicfy" ng-controller="MusicController as musicCtrl">
-    <section class="player-group">
-      <div ng-show="track" class="">
-        <img class="thumbnail" ng-src="{{track.album.images[2].url}}" alt="Album">
-      </div>
-      <strong>{{track.name}}</strong>
-      <div class="btn-group btn-group-lg player center-block">
-        <button type="button" class="btn btn-default" ng-click="back()">
-          <span class="glyphicon glyphicon-backward"></span>
-        </button>
-        <button type="button" class="btn btn-default">
-          <span ng-class="{glyphicon: true, 'glyphicon-play': !playing, 'glyphicon-pause': playing}" ng-click="pausePlay()"></span>
-        </button>
-        <button type="button" class="btn btn-default" ng-click="next()">
-          <span class="glyphicon glyphicon-forward"></span>
-        </button>
-      </div>
-    </section>
+    <track-player></track-player>
   </div>
 
   <!-- build:js(public/) /dist/js/app.min.js -->
@@ -71,6 +52,8 @@
   <script src="/js/controllers/ImagesController.js" type="text/javascript"></script>
   <script src="/js/controllers/MusicController.js" type="text/javascript"></script>
     <!-- Directives -->
+  <script src="/js/directives/TrackPlayerDirective.js" type="text/javascript"></script>
+  <script src="/js/directives/PulsateDirective.js" type="text/javascript"></script>
   <!-- endbuild -->
 </body>
 </html>

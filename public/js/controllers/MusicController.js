@@ -33,38 +33,38 @@
     });
 
     $scope.track = false;
-    $rootScope.$on('music:playing', function(event, track) {
-      $scope.track = track;
-    });
-
     $scope.playing = false;
-    $scope.playBtnClass = function() {
-      var cssClass = 'glyphicon glyphicon-';
-      cssClass += playing ? 'play' : 'pause';
-      return cssClass;
-    };
+    $scope.pulseCounter = 0;
 
     $scope.pausePlay = function() {
       if ($scope.playing) {
-        $scope.playing = false;
         Music.pause();
       } else {
-        $scope.playing = true;
         Music.play();
       }
     };
-    $scope.pause = function() {
-      $scope.playing = false;
-      Music.pause();
-    };
+
     $scope.next = function() {
-      $scope.playing = true;
       Music.next();
     };
+
     $scope.back = function() {
-      $scope.playing = true;
       Music.back();
     };
+
+    /* Subscribing */
+    $rootScope.$on('music:newtrack', function(event, track) {
+      $scope.track = track;
+      $scope.pulseCounter++;
+    });
+
+    $rootScope.$on('music:playing', function(event) {
+      $scope.playing = true;
+    });
+
+    $rootScope.$on('music:paused', function(event) {
+      $scope.playing = false;
+    });
 
   }]);
 

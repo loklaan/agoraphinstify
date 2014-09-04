@@ -11,16 +11,13 @@ html, body, .full-height, .leaflet-container {
   position: relative;
 }
 
-.agora-header, .musicfy {
+.agora-header {
   position: fixed;
   width: 100%;
-  background: rgba(255, 255, 255, 0.5);
-}
-
-.agora-header {
   top: 0;
   right: 0;
   margin: 0;
+  background: rgba(255, 255, 255, 0.5);
   border-bottom: solid 5px #5F5F5F;
   padding: 10px 5px 6px 5%;
 }
@@ -36,20 +33,11 @@ html, body, .full-height, .leaflet-container {
   color: #5F5F5F;
 }
 
-.musicfy {
-  bottom: 0;
-  right: 0;
-  margin: 0;
-  border-top: solid 5px #5F5F5F;
-  padding: 10px 0 5px 0;
-}
-
-.player-group {
-  width: auto;
-}
-
-.player {
+track-player {
   display: table;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: -5px;
 }
 
 .instify {
@@ -62,13 +50,13 @@ html, body, .full-height, .leaflet-container {
  * Animations
  */
 
-/**/
-/* Angular Directive Animations */
-/**/
+ /**/
+ /* Angular Directive Animations */
+ /**/
 
-.repeat-animation.ng-move,
-.repeat-animation.ng-enter,
-.repeat-animation.ng-leave {
+ .repeat-animation.ng-move,
+ .repeat-animation.ng-enter,
+ .repeat-animation.ng-leave {
   -webkit-transition:all linear 0.5s;
   transition:all linear 0.5s;
 }
@@ -176,4 +164,56 @@ html, body, .full-height, .leaflet-container {
 @keyframes loading-bar-spinner {
   0%   { transform: rotate(0deg);   transform: rotate(0deg); }
   100% { transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+.animate {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+    opacity: 1;
+  }
+
+  50% {
+    -webkit-transform: scale3d(1.01, 1.01, 1.01);
+    transform: scale3d(1.01, 1.01, 1.01);
+    opacity: 0.5;
+  }
+
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+    opacity: 1;
+  }
+
+  50% {
+    -webkit-transform: scale3d(1.01, 1.01, 1.01);
+    transform: scale3d(1.01, 1.01, 1.01);
+    opacity: 0.5;
+  }
+
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+    opacity: 1;
+  }
+}
+
+.pulse {
+  -webkit-animation-name: pulse;
+  animation-name: pulse;
 }
