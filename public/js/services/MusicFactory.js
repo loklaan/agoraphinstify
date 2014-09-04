@@ -170,6 +170,10 @@
           },
           // Success API call
           function(tracksData) {
+            // skim first tracks artists uri
+            _tracks.uri = tracksData.tracks[0].artists[0].uri;
+            $rootScope.$broadcast('music:newuri', _tracks.uri);
+
             _tracks.queued = tracksData.tracks;
             _tracks.current = _tracks.queued.pop();
             $rootScope.$broadcast('music:newtrack', _tracks.current);
@@ -235,7 +239,8 @@
     function resetState() {
       _tracks = {
         current: null,
-        queued: []
+        queued: [],
+        uri: ''
       };
     }
 

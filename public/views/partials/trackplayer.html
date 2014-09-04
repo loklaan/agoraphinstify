@@ -8,17 +8,21 @@
       <span class="glyphicon glyphicon-backward"></span>
     </button>
 
+    <!-- Forward -->
+    <button type="button" class="btn btn-default" ng-click="next()">
+      <span class="glyphicon glyphicon-forward"></span>
+    </button>
+
     <!-- Play -->
     <button type="button" class="btn btn-default" ng-click="pausePlay()">
       <span id="trackinfo" ng-class="{glyphicon: true, 'glyphicon-play': !playing, 'glyphicon-pause': playing}">
         <!-- Track Information -->
-        <span pulsator ng-show="track">{{track.name}} by {{track.artists[0].name}}</span>
+        <span pulsator ng-show="track"><strong>{{track.name}}</strong> by <strong>{{track.artists[0].name}}</strong></span>
       </span>
     </button>
 
-    <!-- Forward -->
-    <button type="button" class="btn btn-default" ng-click="next()">
-      <span class="glyphicon glyphicon-forward"></span>
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#spotifyModal">
+      Spotify
     </button>
 
   </div>

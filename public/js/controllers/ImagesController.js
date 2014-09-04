@@ -37,6 +37,7 @@
     };
 
     $scope.getImages = function() {
+      $scope.hasFailed = false;
       Events.getEvent($routeParams.eventId,
         // Success API call
         function(event) {

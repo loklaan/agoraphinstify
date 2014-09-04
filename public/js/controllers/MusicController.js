@@ -16,14 +16,20 @@
     '$rootScope',
     '$route',
     '$routeParams',
-    '$location',
+    '$timeout',
     'Music',
     'Events',
-  function($scope, $rootScope, $route, $routeParams, $location, Music, Events) {
+  function($scope, $rootScope, $route, $routeParams, $timeout, Music, Events) {
 
     // Artist queuing depends on Browsers URL location
+    var firstRoute = false;
     $scope.$on('$routeChangeSuccess', function(event, current, previous) {
       if (angular.isDefined(current.params.performerId)) {
+        // Embed Spotify iframe causes chain route digests on first load
+        if (firstRoute && angular.isUndefined(previous)) {
+          return;
+        }
+        firstRoute = true;
         Events.getPerformer(current.params.performerId,
           function(performer) {
             Music.queueNewArtist(performer.name);
@@ -52,7 +58,6 @@
       Music.back();
     };
 
-    /* Subscribing */
     $rootScope.$on('music:newtrack', function(event, track) {
       $scope.track = track;
       $scope.pulseCounter++;
