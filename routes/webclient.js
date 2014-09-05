@@ -34,9 +34,14 @@
     });
 
     /**
+     * Map hotlinking
+     */
+    app.get('/map*', serveIndex);
+
+    /**
      * Event hotlinking, described by IDs provided by Eventful
      */
-    app.get('/e/:eventId/:patientId', serveIndex);
+    app.get('/event*', serveIndex);
 
   };
 

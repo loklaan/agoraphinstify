@@ -12,13 +12,22 @@
    */
   module.controller('MapController', [
     '$scope',
+    '$rootScope',
+    '$timeout',
+    '$location',
     'leafletData',
     'Events',
     'EventMarkers',
     'Map',
-    '$rootScope',
-    '$timeout',
-  function($scope, leafletData, Events, EventMarkers, Map, $rootScope, $timeout) {
+  function($scope, $rootScope, $timeout, $location, leafletData, Events, EventMarkers, Map) {
+
+    var lat = false,
+        lng = false;
+        search = angular.isDefined($location.search());
+    if (search.lat && search.lng) {
+      lat = parseFloat(search.lat);
+      lng = parseFloat(search.lng);
+    }
 
     // MAP DEFAULTS
     angular.extend($scope, {
@@ -26,10 +35,16 @@
         zoomControl: false
       },
       center: {
-        autoDiscover: Map.info() === null ? true : false,
+        autoDiscover: Map.info() === null || lat ?
+          true :
+          false,
         zoom: Map.info() === null ? 14 : Map.info().zoom,
-        lat: Map.info() === null ? 0 : Map.info().lat,
-        lng: Map.info() === null ? 0 : Map.info().lng
+        lat: Map.info() === null ?
+          (lat ? lat : 0) :
+          Map.info().lat,
+        lng: Map.info() === null ?
+          (lng ? lng : 0) :
+          Map.info().lng
       },
       tiles: {
         url: "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg",
@@ -72,6 +87,7 @@
       var within = getApproxMapRadiusKM($scope._map);
       within = within < 25 ? within : 25; // limit events search radius to 25km
       var center = $scope._map.getCenter();
+      $location.search({lat: center.lat, lng: center.lng});
       var results = Events.startGet({
         where: center.lat + ',' + center.lng,
         within: within

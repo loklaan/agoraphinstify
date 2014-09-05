@@ -21,24 +21,24 @@
 
     cfpLoadingBarProvider.includeBar = false;
 
-    $routeProvider.
-    // Map view homepage
-    when('/', {
+    var map = {
       templateUrl: '../views/partials/map.html',
       controller: 'MapController',
-      controllerAs: 'map'
-    }).
+      controllerAs: 'map',
+      reloadOnSearch: false
+    };
+    var instify = {
+      templateUrl: '/partials/instify',
+      controller: 'InstifyController',
+      controllerAs: 'instify'
+    };
+    $routeProvider.
+    // Map view homepage
+    when('/map', map).
     // Instify view by event
-    when('/e/:eventId/:performerId', {
-      templateUrl: '/partials/instify',
-      controller: 'InstifyController',
-      controllerAs: 'instify'
-    }).
-    // Instify view by venue
-    when('/v/:venueId', {
-      templateUrl: '/partials/instify',
-      controller: 'InstifyController',
-      controllerAs: 'instify'
+    when('/event/:eventId/artist/:performerId', instify).
+    otherwise({
+      redirectTo: '/map'
     });
 
     $locationProvider.html5Mode(true);
