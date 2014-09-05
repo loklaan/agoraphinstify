@@ -31,6 +31,8 @@ $ npm run test-e2e
 
 Tests are written with BDD Jasmine framework. `jasmine-node` runs server side unit tests, `karma` runs client side unit tests on available browsers and `protractor` runs end to end tests with WebDriver.
 
+Replace API keys in the `config.js` with your own, if required.
+
 ## License
 
 [The MIT License (MIT)](http://opensource.org/licenses/MIT)
