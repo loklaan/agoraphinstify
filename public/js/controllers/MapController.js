@@ -21,9 +21,9 @@
     'Map',
   function($scope, $rootScope, $timeout, $location, leafletData, Events, EventMarkers, Map) {
 
-    var lat = false,
-        lng = false;
-        search = angular.isDefined($location.search());
+    var lat,
+        lng,
+        search = $location.search();
     if (search.lat && search.lng) {
       lat = parseFloat(search.lat);
       lng = parseFloat(search.lng);
@@ -35,15 +35,15 @@
         zoomControl: false
       },
       center: {
-        autoDiscover: Map.info() === null || lat ?
+        autoDiscover: Map.info() === null && angular.isUndefined(lat) ?
           true :
           false,
         zoom: Map.info() === null ? 14 : Map.info().zoom,
         lat: Map.info() === null ?
-          (lat ? lat : 0) :
+          (angular.isDefined(lat) ? lat : 0) :
           Map.info().lat,
         lng: Map.info() === null ?
-          (lng ? lng : 0) :
+          (angular.isDefined(lng) ? lng : 0) :
           Map.info().lng
       },
       tiles: {
@@ -66,8 +66,12 @@
         }, 200);
       } else {
         map.on('moveend resize', mapWatcher);
-      }
 
+        // hotlinking doesn't trigger otherwise
+        if (lat) {
+          map.fire('moveend');
+        }
+      }
     });
 
     // EventMarkers ng service will publish new markers

@@ -51,7 +51,7 @@
             lat: parseFloat(event.latitude),
             lng: parseFloat(event.longitude),
             draggable: false,
-            message: event.venue_name + ': ',
+            message: '<strong>' + event.venue_name + '</strong>' + ': ',
             events: []
           };
         }
