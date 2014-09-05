@@ -42,10 +42,10 @@
           false,
         zoom: Map.info() === null ? 14 : Map.info().zoom,
         lat: Map.info() === null ?
-          (angular.isDefined(route.lat) ? route.lat : 0) :
+          (angular.isDefined(route.lat) ? route.lat : 27.461) :
           Map.info().lat,
         lng: Map.info() === null ?
-          (angular.isDefined(route.lng) ? route.lng : 0) :
+          (angular.isDefined(route.lng) ? route.lng : 153.024) :
           Map.info().lng
       },
       tiles: {
