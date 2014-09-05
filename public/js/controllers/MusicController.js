@@ -71,6 +71,11 @@
       $scope.playing = false;
     });
 
+    $rootScope.$on('music:stop', function(event) {
+      $scope.track = false;
+      $scope.playing = false;
+    });
+
   }]);
 
 })();

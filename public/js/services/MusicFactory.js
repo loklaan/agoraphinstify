@@ -44,6 +44,10 @@
      * @param  {string} artistName Name of artist
      */
     MusicFactory.queueNewArtist = function(artistName) {
+      if (_tracks.current) {
+        _tracks.current.audio.pause();
+        $rootScope.$broadcast('music:stop');
+      }
       resetState();
       searchArtistId(artistName, queueTopTracks);
     };
