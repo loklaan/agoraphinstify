@@ -21,12 +21,14 @@
     'Map',
   function($scope, $rootScope, $timeout, $location, leafletData, Events, EventMarkers, Map) {
 
-    var lat,
-        lng,
+    var route = {
+          lat: undefined,
+          lng: undefined
+        },
         search = $location.search();
     if (search.lat && search.lng) {
-      lat = parseFloat(search.lat);
-      lng = parseFloat(search.lng);
+      route.lat = parseFloat(search.lat);
+      route.lng = parseFloat(search.lng);
     }
 
     // MAP DEFAULTS
@@ -35,15 +37,15 @@
         zoomControl: false
       },
       center: {
-        autoDiscover: Map.info() === null && angular.isUndefined(lat) ?
+        autoDiscover: Map.info() === null && angular.isUndefined(route.lat) ?
           true :
           false,
         zoom: Map.info() === null ? 14 : Map.info().zoom,
         lat: Map.info() === null ?
-          (angular.isDefined(lat) ? lat : 0) :
+          (angular.isDefined(route.lat) ? route.lat : 0) :
           Map.info().lat,
         lng: Map.info() === null ?
-          (angular.isDefined(lng) ? lng : 0) :
+          (angular.isDefined(route.lng) ? route.lng : 0) :
           Map.info().lng
       },
       tiles: {
@@ -61,6 +63,7 @@
       $scope._map = map;
 
       if (Map.info() !== null) {
+        buildUrl(Map.info().lat, Map.info().lng);
         $timeout(function() {
           map.on('moveend resize', mapWatcher);
         }, 200);
@@ -68,7 +71,7 @@
         map.on('moveend resize', mapWatcher);
 
         // hotlinking doesn't trigger otherwise
-        if (lat) {
+        if (route.lat) {
           map.fire('moveend');
         }
       }
@@ -91,7 +94,7 @@
       var within = getApproxMapRadiusKM($scope._map);
       within = within < 25 ? within : 25; // limit events search radius to 25km
       var center = $scope._map.getCenter();
-      $location.search({lat: center.lat, lng: center.lng});
+      buildUrl(center.lat, center.lng);
       var results = Events.startGet({
         where: center.lat + ',' + center.lng,
         within: within
@@ -110,6 +113,10 @@
         lat: $scope._map.getCenter().lat,
         lng: $scope._map.getCenter().lng
       });
+    }
+
+    function buildUrl(lat, lng) {
+      $location.search({lat: lat, lng: lng});
     }
 
   }]);

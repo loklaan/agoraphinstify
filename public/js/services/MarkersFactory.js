@@ -90,7 +90,7 @@
     }
 
     function linkifyPerformerName(performer, event) {
-      return '<a href="e/' + event.id.toLowerCase() + '/' + performer.id.toLowerCase() + '">' +
+      return '<a href="event/' + event.id.toLowerCase() + '/artist/' + performer.id.toLowerCase() + '">' +
         performer.name + '</a>';
     }
 
