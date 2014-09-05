@@ -15,9 +15,10 @@
     'leafletData',
     'Events',
     'EventMarkers',
+    'Map',
     '$rootScope',
     '$timeout',
-  function($scope, leafletData, Events, EventMarkers, $rootScope, $timeout) {
+  function($scope, leafletData, Events, EventMarkers, Map, $rootScope, $timeout) {
 
     // MAP DEFAULTS
     angular.extend($scope, {
@@ -25,10 +26,10 @@
         zoomControl: false
       },
       center: {
-        autoDiscover: true,
-        zoom: 14,
-        lat: 0,
-        lng: 0
+        autoDiscover: Map.info() === null ? true : false,
+        zoom: Map.info() === null ? 14 : Map.info().zoom,
+        lat: Map.info() === null ? 0 : Map.info().lat,
+        lng: Map.info() === null ? 0 : Map.info().lng
       },
       tiles: {
         url: "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg",
@@ -36,7 +37,7 @@
           attribution: '&copy; <a href="http://stamen.com">Stamen Design</a> Tile Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> Contributors'
         }
       },
-      markers: {},
+      markers: EventMarkers.markers(),
       _map: {},
       _scrubBuffer: {}
     });
@@ -44,13 +45,14 @@
     leafletData.getMap().then(function(map) {
       $scope._map = map;
 
-      // map changes trigger new eventful query chain
-      $scope._map.addEventListener('moveend resize', function() {
-        // prevent new eventful request from instaly happening on
-        // new map changes
-        $timeout.cancel($scope._scrubBuffer);
-        $scope._scrubBuffer = $timeout(callEventful, 1500);
-      });
+      if (Map.info() !== null) {
+        $timeout(function() {
+          map.on('moveend resize', mapWatcher);
+        }, 200);
+      } else {
+        map.on('moveend resize', mapWatcher);
+      }
+
     });
 
     // EventMarkers ng service will publish new markers
@@ -58,7 +60,15 @@
       $scope.markers = newMarkers;
     });
 
+    // prevent map changes from instantly making eventful request
+    function mapWatcher() {
+      $timeout.cancel($scope._scrubBuffer);
+      $scope._scrubBuffer = $timeout(callEventful, 1500);
+    }
+
     function callEventful() {
+      // Update stored map
+      updateMapInfo();
       var within = getApproxMapRadiusKM($scope._map);
       within = within < 25 ? within : 25; // limit events search radius to 25km
       var center = $scope._map.getCenter();
@@ -72,6 +82,14 @@
       // FIX: divide by something accurate
       return $scope._map.getBounds().getNorthEast().
       distanceTo($scope._map.getCenter()) / 1000;
+    }
+
+    function updateMapInfo() {
+      Map.info({
+        zoom: $scope._map.getZoom(),
+        lat: $scope._map.getCenter().lat,
+        lng: $scope._map.getCenter().lng
+      });
     }
 
   }]);
