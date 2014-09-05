@@ -48,7 +48,8 @@
       var latestParams = _request.queue[_request.queue.length - 1];
       if (params === latestParams) {
         resetState();
-        getEvents(latestParams, ++_request.id);
+        _request.id += 1;
+        getEvents(latestParams, _request.id);
       }
     };
 
@@ -57,7 +58,7 @@
      * chain from continuing.
      */
     EventsFactory.stopGet = function() {
-      _request.id++;
+      _request.id += 1;
     };
 
     /**
@@ -126,7 +127,7 @@
             if (_request.timeout >= 5) {
               return;
             } else {
-              _request.timeout++;
+              _request.timeout += 1;
               getEvents(params, currentReq);
             }
 

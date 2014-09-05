@@ -60,7 +60,7 @@
 
     $rootScope.$on('music:newtrack', function(event, track) {
       $scope.track = track;
-      $scope.pulseCounter++;
+      $scope.pulseCounter += 1;
     });
 
     $rootScope.$on('music:playing', function(event) {

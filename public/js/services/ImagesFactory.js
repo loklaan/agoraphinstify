@@ -20,8 +20,7 @@
 
    var API = '/api/instagram',
        LOCATION = {
-        pingrepeats: 20,
-        pingvariance: 0.001,
+        attempts: 20,
         distance: 50,
       };
 
@@ -45,10 +44,12 @@
      */
     ImagesFactory.startGet = function(venueName, latitude, longitute) {
       resetState();
-      getLocations(venueName, {
+      _request.id += 1;
+      getLocations({
+        name: venueName,
         lat: parseFloat(latitude),
         lng: parseFloat(longitute)
-      }, ++_request.id);
+      }, _request.id);
     };
 
     /**
@@ -56,7 +57,7 @@
      * next available images.
      */
     ImagesFactory.stopGet = function() {
-      _request.id++;
+      _request.id += 1;
     };
 
     /**
@@ -74,68 +75,44 @@
 
     /**
      * Finds Instagram location entities within a radius of the
-     * coordinates that match the Venue name. Queues next page of
-     * available Images.
+     * coordinates that match the Venue name.
      *
-     * @param  {String} venueName   Name of the location / venue
      * @param  {object} params      API query key/values
      * @param  {Number} currentReq  Request instance id of the Service
      */
-    function getLocations(venueName, params, currentReq) {
-      var tempParams = params;
+    function getLocations(params, currentReq) {
+      NearbyLocations.get(params,
+        // Success
+        function(results) {
+          if (currentReq !== _request.id) {
+            // New or stopRequest() called
+            return;
+          } else if (results.meta.code === 200) {
 
-      // Trying several slighty altered coordinates
-      _.times(LOCATION.pingrepeats, function() {
-        NearbyLocations.get(tempParams,
-          // Success
-          function(results) {
-            if (currentReq !== _request.id) {
-              // New or stopRequest() called
-              return;
-            } else if (results.data.length > 0) {
+            // Initialise queue of locations
+            _request.queue = _.map(results.data, function(location) {
+              return {
+                locationId: location.id
+              };
+            });
 
-              // Make array of Instagram locations with similar Venue names
-              var resultMatches = _.filter(results.data,
-                function(location) {
-                  return compareVenueNames(venueName, location.name);
-                });
+            // Start getting images
+            getLocationImages(currentReq);
 
-              // Join array of valid API params with modules queued params
-              _request.queue = _.union(_request.queue,
-                _.map(resultMatches, function(location) {
-                  return {
-                    locationId: location.id
-                  };
-                }));
-
-              // Once all queries are done
-              if (++_request.responses >= LOCATION.pingrepeats) {
-                if (_request.queue.length > 0) {
-                  // Start getting images
-                  _request.queue = _.uniq(_request.queue, 'locationId');
-                  getLocationImages(currentReq);
-                } else {
-                  // or broadcast a failed attempt
-                  $rootScope.$broadcast('images:locationfail', venueName);
-                }
-              }
-            }
-
-          },
-          // Failed API call
-          function(reason) {
-            console.error(reason);
+          } else {
+            $rootScope.$broadcast('images:locationfail', params.name);
           }
-        );
-
-        tempParams.lat = params.lat + hackyPingVariance();
-        tempParams.lng = params.lng + hackyPingVariance();
-      });
+        },
+        // Failed API call
+        function(reason) {
+          console.error(reason);
+        }
+      );
     }
 
     /**
      * Gets Instagram images for an Instagram location record. Broadcasts an
-     * update event on new Images.
+     * update event on new Images. Queues next page of available Images.
      *
      * @param  {Number} currentReq  Request instance id of the Service
      */
@@ -184,11 +161,13 @@
    REST Client Functions
    ========================================================================== */
 
+    /* Requires custom 'attempts' and 'name' proxy params. See server api routes. */
     var NearbyLocations = $resource(API + '/locations/search', {}, {
       get: {
         method: 'GET',
         params: {
-          distance: LOCATION.distance
+          distance: LOCATION.distance,
+          attempts: LOCATION.attempts
         }
       }
     });
@@ -204,21 +183,8 @@
    Utility Functions
    ========================================================================== */
 
-    function hackyPingVariance() {
-      var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
-      return (plusOrMinus * (Math.random() * LOCATION.pingvariance));
-    }
-
-    function compareVenueNames(one, two) {
-      // TODO: do something fancier
-      one = one.toLowerCase();
-      two = two.toLowerCase();
-      return one.indexOf(two) !== -1 || two.indexOf(one) !== -1;
-    }
-
     function resetState() {
       _images = [];
-      _request.responses = 0;
       _request.queue = [];
     }
 

@@ -12,6 +12,7 @@
     "url": "https://api.instagram.com/v1",
     "auth": {
       "client_id": "1799b886cb2d423191584c5ccde96b16"
-    }
+    },
+    "geolocation_variance": 0.001
   }
 }
