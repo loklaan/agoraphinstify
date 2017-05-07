@@ -1,5 +1,7 @@
 # Agoraphinstify
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/loklaan/agoraphinstify.svg)](https://greenkeeper.io/)
+
 Web mashup that combines Maps, Crowdsourced Photos and Music to give the illest of chills to a suffering Agoraphobe.
 
 [![Issues in Progress](https://badge.waffle.io/loklaan/agoraphinstify.svg?label=in progress&title=In Progress)](http://waffle.io/loklaan/agoraphinstify)
